@@ -15,6 +15,7 @@ enum ErrorReason {
     case cacheNotAccessible
     case noFile
     case noData
+    
     case generic(String)
 
 }
