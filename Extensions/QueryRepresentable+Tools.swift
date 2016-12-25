@@ -1,6 +1,6 @@
 //
 //  QueryRepresentable+Tools.swift
-//  Boost
+//  Smoke
 //
 //  Created by Ondrej Rafaj on 19/12/2016.
 //  Copyright © 2016 manGoweb UK Ltd. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  Team.swift
-//  Boost
+//  Smoke
 //
 //  Created by Ondrej Rafaj on 30/11/2016.
 //  Copyright © 2016 manGoweb UK Ltd. All rights reserved.
@@ -90,7 +90,7 @@ extension Team {
     
     func members() throws -> Fluent.Query<User>? {
         guard let users = self.users else {
-            throw BoostError(.noData)
+            throw SmokeError(.noData)
         }
         // BOOST: Fix this query!!!!
         return try User.query().filter("_id", .in, users)
