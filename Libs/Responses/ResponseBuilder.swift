@@ -20,6 +20,8 @@ struct ResponseBuilder {
         do {
             let status: Status = .other(statusCode: statusCode.rawValue, reasonPhrase: Lang.get("Success"))
             let response: Response = try Response.init(status: status, json: JSON(model.makeNode()))
+            response.headers["Content-Type"] = "application/json"
+            response.headers["Access-Control-Allow-Origin"] = "*"
             return response
         }
         catch {
@@ -31,6 +33,8 @@ struct ResponseBuilder {
         do {
             let status: Status = .other(statusCode: statusCode.rawValue, reasonPhrase: Lang.get("Success"))
             let response: Response = try Response.init(status: status, json: json)
+            response.headers["Content-Type"] = "application/json"
+            response.headers["Access-Control-Allow-Origin"] = "*"
             return response
         }
         catch {
@@ -42,6 +46,8 @@ struct ResponseBuilder {
         do {
             let status: Status = .other(statusCode: statusCode.rawValue, reasonPhrase: Lang.get("Success"))
             let response: Response = try Response.init(status: status, json: JSON(node))
+            response.headers["Content-Type"] = "application/json"
+            response.headers["Access-Control-Allow-Origin"] = "*"
             return response
         }
         catch {
@@ -61,6 +67,8 @@ struct ResponseBuilder {
                 formattedErrors.append(errorNode)
             }
             let response: Response = try Response.init(status: status, json: JSON(formattedErrors.makeNode()))
+            response.headers["Content-Type"] = "application/json"
+            response.headers["Access-Control-Allow-Origin"] = "*"
             return response
         }
         catch {
@@ -74,12 +82,16 @@ struct ResponseBuilder {
         let response = Response(status: .other(statusCode: code.rawValue, reasonPhrase: message))
         response.headers["Content-Type"] = "application/json"
         response.body = try! Body(JSON(["error": (bodyMessage != nil ? bodyMessage! : message).makeNode()]))
+        response.headers["Access-Control-Allow-Origin"] = "*"
         return response
     }
     
     static var okNoContent: ResponseRepresentable {
         get {
-            return Response(status: .other(statusCode: StatusCodes.successNoData.rawValue, reasonPhrase: Lang.get("Success")))
+            let response = Response(status: .other(statusCode: StatusCodes.successNoData.rawValue, reasonPhrase: Lang.get("Success")))
+            response.headers["Content-Type"] = "application/json"
+            response.headers["Access-Control-Allow-Origin"] = "*"
+            return response
         }
     }
     
