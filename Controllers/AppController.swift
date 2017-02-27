@@ -52,6 +52,7 @@ final class AppController: RootController, ControllerProtocol {
     // MARK: Intro
     
     func root(request: Request) throws -> ResponseRepresentable {
+        // FIX: Change this to be loaded from config!
         return ResponseBuilder.build(json: JSON(["Boost Enterprise AppStore": "https://github.com/manGoweb/Boost"]))
     }
     
