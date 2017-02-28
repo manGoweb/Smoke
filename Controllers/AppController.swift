@@ -30,6 +30,9 @@ final class AppController: RootController, ControllerProtocol {
         drop.patch("*") { request in
             return ResponseBuilder.notImplemented
         }
+        drop.options("*") { request in
+            return ResponseBuilder.cors(request)
+        }
     }
     
     func configureRoutes() {

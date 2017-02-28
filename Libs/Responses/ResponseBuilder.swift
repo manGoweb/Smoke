@@ -95,6 +95,28 @@ struct ResponseBuilder {
         }
     }
     
+    static func cors(_ request: Request) -> ResponseRepresentable {
+        let response = Response(status: .other(statusCode: StatusCodes.successNoData.rawValue, reasonPhrase: Lang.get("CORS success")))
+        response.headers["Content-Type"] = "application/json"
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        var headers: [String] = []
+        var isContentType: Bool = false
+        for headerKey in request.headers.keys {
+            if (headerKey.key.lowercased() == "content-type") {
+                isContentType = true
+            }
+            headers.append(headerKey.key)
+        }
+        if !isContentType {
+            headers.append("Content-Type")
+        }
+        headers.append("*")
+        response.headers["Access-Control-Allow-Headers"] = headers.joined(separator: ", ")
+        response.headers["Access-Control-Max-Age"] = "86400"
+        return response
+    }
+    
     static var notFound: ResponseRepresentable {
         get {
             return self.customErrorResponse(statusCode: .notFound, message: Lang.get("Not found"))

@@ -67,7 +67,7 @@ final class UsersController: RootController, ControllerProtocol {
     }
     
     func auth(request: Request) throws -> ResponseRepresentable {
-        guard let email = request.data["email"]?.string else {
+        guard let email = request.data["username"]?.string else {
             return ResponseBuilder.notAuthorised
         }
         guard let password = request.data["password"]?.string else {
