@@ -62,7 +62,7 @@ final class AppController: RootController, ControllerProtocol {
     // MARK: Data pages
     
     func ping(request: Request) throws -> ResponseRepresentable {
-        return ResponseBuilder.build(json: JSON(["result": "success", "message": Lang.get("Johnny 5 is alive").makeNode()]))
+        return ResponseBuilder.ping
     }
     
 }

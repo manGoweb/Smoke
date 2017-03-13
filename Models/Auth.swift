@@ -20,6 +20,7 @@ final class Auth: Model {
     var id: Node?
     var token: String?
     var created: Date?
+    var expires: Date?
     var userId: Node?
     var user: User?
     
@@ -29,6 +30,8 @@ final class Auth: Model {
     init(user: User) {
         self.token = UUID().uuidString
         self.created = Date()
+        let expires: TimeInterval = (Date().timeIntervalSince1970 + (7 * 86400))
+        self.expires = Date(timeIntervalSince1970: expires)
         self.user = user
         self.userId = self.user?.id
     }
@@ -37,6 +40,7 @@ final class Auth: Model {
         self.id = try node.extract("_id")
         self.token = try node.extract("token")
         self.created = try Date(rfc1123: node.extract("created"))
+        self.expires = try Date(rfc1123: node.extract("expires"))
         
         self.userId = try node.extract("user")
         let user = try User.query().filter("user", self.userId!).first()
@@ -50,6 +54,7 @@ final class Auth: Model {
             "_id": self.id,
             "token": tokenHash,
             "created": self.created?.rfc1123,
+            "expires": self.expires?.rfc1123,
             "user": self.userId
             ])
     }
@@ -57,7 +62,7 @@ final class Auth: Model {
     func makeJSON() throws -> JSON {
         let user: User = self.user!
         user.password = nil
-        return JSON(["access_token": self.token!.makeNode(), "user": try user.makeNode()])
+        return JSON(["token": self.token!.makeNode(), "expires": self.expires!.timeIntervalSince1970.makeNode(), "user": try user.makeNode()])
     }
     
 }

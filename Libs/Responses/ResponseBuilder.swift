@@ -86,6 +86,15 @@ struct ResponseBuilder {
         return response
     }
     
+    static var ping: ResponseRepresentable {
+        get {
+            let response = Response(status: .other(statusCode: StatusCodes.successNoData.rawValue, reasonPhrase: Lang.get("Johnny 5 is Alive")))
+            response.headers["Content-Type"] = "application/json"
+            response.headers["Access-Control-Allow-Origin"] = "*"
+            return response
+        }
+    }
+    
     static var okNoContent: ResponseRepresentable {
         get {
             let response = Response(status: .other(statusCode: StatusCodes.successNoData.rawValue, reasonPhrase: Lang.get("Success")))
@@ -96,10 +105,10 @@ struct ResponseBuilder {
     }
     
     static func cors(_ request: Request) -> ResponseRepresentable {
-        let response = Response(status: .other(statusCode: StatusCodes.successNoData.rawValue, reasonPhrase: Lang.get("CORS success")))
+        let response = Response(status: .other(statusCode: StatusCodes.success.rawValue, reasonPhrase: Lang.get("CORS success")))
         response.headers["Content-Type"] = "application/json"
         response.headers["Access-Control-Allow-Origin"] = "*"
-        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
         var headers: [String] = []
         var isContentType: Bool = false
         for headerKey in request.headers.keys {
@@ -112,8 +121,11 @@ struct ResponseBuilder {
             headers.append("Content-Type")
         }
         headers.append("*")
-        response.headers["Access-Control-Allow-Headers"] = headers.joined(separator: ", ")
-        response.headers["Access-Control-Max-Age"] = "86400"
+        if !headers.contains("X-AuthToken") {
+            headers.append("X-AuthToken")
+        }
+        response.headers["Access-Control-Allow-Headers"] = headers.joined(separator: ",")
+        response.headers["Access-Control-Max-Age"] = "400"
         return response
     }
     

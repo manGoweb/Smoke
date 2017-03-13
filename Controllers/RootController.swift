@@ -39,6 +39,7 @@ class RootController {
                 // BOOST: Can we merge the following into one query?
                 Me.shared.auth = try Auth.find(tokenString: token)
                 if Me.shared.auth != nil {
+                    // BOOST: Here we could check expiry time of a token and extend it's lifetime if the token is valid
                     Me.shared.user = try User.find(Me.shared.auth!.userId!)
                     if Me.shared.user != nil {
                         return nil
