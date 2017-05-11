@@ -12,10 +12,10 @@ import Vapor
 
 extension Dictionary {
     
-    static func get(fromPlistAtUrl url: URL) throws -> [String: AnyObject]? {
-        var format = PropertyListSerialization.PropertyListFormat.xml
+    static func get(fromPlistAtUrl url: URL, format: PropertyListSerialization.PropertyListFormat = PropertyListSerialization.PropertyListFormat.binary) throws -> [String: AnyObject]? {
         let plistData: Data = try Data.init(contentsOf: url)
-        let plist: [String: AnyObject]? = try PropertyListSerialization.propertyList(from: plistData, options: [], format: &format) as? [String:AnyObject]
+        var varFormat: PropertyListSerialization.PropertyListFormat = format
+        let plist: [String: AnyObject]? = try PropertyListSerialization.propertyList(from: plistData, options: [], format: &varFormat) as? [String:AnyObject]
         return plist
     }
 

@@ -114,8 +114,12 @@ final class UsersController: RootController, ControllerProtocol {
             return ResponseBuilder.notAuthorised
         }
         
-        let users = try User.query()
-        return JSON(try users.all().makeNode())
+        let query = try User.query()
+        let users: [User] = try query.all()
+        for user: User in users {
+            user.password = nil
+        }
+        return JSON(try users.makeNode())
     }
     
     func view(request: Request, userId: IdType) throws -> ResponseRepresentable {
@@ -130,6 +134,8 @@ final class UsersController: RootController, ControllerProtocol {
         guard let user = try User.find(userId) else {
             return ResponseBuilder.notFound
         }
+        
+        user.password = nil
         return ResponseBuilder.build(model: user)
     }
     
@@ -159,6 +165,7 @@ final class UsersController: RootController, ControllerProtocol {
             return ResponseBuilder.internalServerError
         }
         
+        user.password = nil
         return ResponseBuilder.build(model: user)
     }
     
@@ -197,7 +204,6 @@ final class UsersController: RootController, ControllerProtocol {
         }
         
         var user = User()
-        
         return try self.createUserResponse(request: request, user: &user)
     }
     
@@ -264,6 +270,8 @@ extension UsersController {
             catch {
                 return ResponseBuilder.internalServerError
             }
+            
+            user.password = nil
             
             return ResponseBuilder.build(model: user, statusCode: StatusCodes.created)
         }
