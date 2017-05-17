@@ -156,6 +156,12 @@ final class UsersController: RootController, ControllerProtocol {
         }
         
         // TODO: Check if new email exists
+        if let email: String = request.data["email"] as? String {
+            if try! User.exists(email: email) {
+                return ResponseBuilder.emailExists
+            }
+        }
+        
         try user.update(fromRequest: request)
         
         do {

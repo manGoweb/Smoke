@@ -114,6 +114,11 @@ extension User {
         return object != nil
     }
     
+    static func exists(email: String) throws -> Bool {
+        let object = try self.find(email: email)
+        return object != nil
+    }
+    
     static func exists(idString: String) throws -> Bool {
         return try self.exists(id: idString.makeNode())
     }
