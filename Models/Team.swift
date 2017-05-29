@@ -8,7 +8,7 @@
 
 import Foundation
 import Vapor
-import Fluent
+import FluentProvider
 import HTTP
 
 
@@ -41,9 +41,9 @@ final class Team: Model {
         return try Node(node: [
             "_id": self.id,
             "name": self.name,
-            "created": self.created?.timeIntervalSince1970.makeNode(),
+            "created": self.created?.timeIntervalSince1970.makeNode(in: nil),
             "admin": self.adminTeam,
-            "users": self.users?.makeNode()
+            "users": self.users?.makeNode(in: nil)
             ])
     }
     
@@ -77,7 +77,7 @@ extension Team {
     }
     
     static func exists(idString: String) throws -> Bool {
-        return try self.exists(id: idString.makeNode())
+        return try self.exists(id: idString.makeNode(in: nil))
     }
     
     static func query(forUserId userId: Node) throws -> Fluent.Query<Team> {

@@ -8,7 +8,6 @@
 
 import Foundation
 import Vapor
-import Hash
 
 
 extension String {
@@ -16,7 +15,7 @@ extension String {
     var md5: String {
         get {
             do {
-                let bytes: Bytes = try Hash.make(.md5, self)
+                let bytes: Bytes = try drop.hash.make(.md5, self)
                 return try String.init(bytes: bytes)
             }
             catch {

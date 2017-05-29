@@ -28,7 +28,7 @@ extension Request {
     
     var uploadToken: Node? {
         get {
-            return self.uploadTokenString?.makeNode()
+            return self.uploadTokenString?.makeNode(in: nil)
         }
     }
     
@@ -48,7 +48,7 @@ extension Request {
     
     var authToken: Node? {
         get {
-            return self.authTokenString?.makeNode()
+            return self.authTokenString?.makeNode(in: nil)
         }
     }
     

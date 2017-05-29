@@ -8,7 +8,7 @@
 
 import Foundation
 import Vapor
-import Fluent
+import FluentProvider
 import HTTP
 
 
@@ -72,11 +72,11 @@ final class User: Model {
             "lastname": self.lastname,
             "company": self.company,
             "phone": self.phone,
-            "ims": self.ims?.makeNode(),
-            "timezone": self.timezone?.makeNode(),
+            "ims": self.ims?.makeNode(in: nil),
+            "timezone": self.timezone?.makeNode(in: nil),
             "token": self.token,
-            "created": self.created?.timeIntervalSince1970.makeNode(),
-            //"teams": self.teams?.makeNode()
+            "created": self.created?.timeIntervalSince1970.makeNode(in: nil),
+            //"teams": self.teams?.makeNode(in: nil)
             ])
     }
     
@@ -120,7 +120,7 @@ extension User {
     }
     
     static func exists(idString: String) throws -> Bool {
-        return try self.exists(id: idString.makeNode())
+        return try self.exists(id: idString.makeNode(in: nil))
     }
     
     func teams() throws -> Fluent.Query<Team> {

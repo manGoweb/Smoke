@@ -90,13 +90,13 @@ extension SettingsController {
         var newData: [String: Node] = [:]
         for key: String in data.keys {
             if let value: String = data[key] as? String {
-                newData[key] = value.makeNode()
+                newData[key] = value.makeNode(in: nil)
             }
             else if let value: Int = data[key] as? Int {
-                newData[key] = try value.makeNode()
+                newData[key] = try value.makeNode(in: nil)
             }
         }
-        return try newData.makeNode()
+        return try newData.makeNode(in: nil)
     }
     
     func saveDataToS3(_ dataToSave: [String: Any]) throws {

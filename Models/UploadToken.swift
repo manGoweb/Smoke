@@ -8,7 +8,7 @@
 
 import Foundation
 import Vapor
-import Fluent
+import FluentProvider
 import HTTP
 
 
@@ -42,7 +42,7 @@ final class UploadToken: Model {
             "token": self.token,
             "name": self.name,
             "created": self.created?.timeIntervalSince1970,
-            "apps": self.limitedToApps?.makeNode()
+            "apps": self.limitedToApps?.makeNode(in: nil)
             ])
         return nodes
     }
@@ -50,10 +50,10 @@ final class UploadToken: Model {
     func makeJSON() throws -> JSON {
         return try JSON([
             "_id": self.id!,
-            "name": self.name!.makeNode(),
-            "created": self.created!.timeIntervalSince1970.makeNode(),
-            "apps": (self.limitedToApps ?? []).makeNode()
-        ].makeNode())
+            "name": self.name!.makeNode(in: nil),
+            "created": self.created!.timeIntervalSince1970.makeNode(in: nil),
+            "apps": (self.limitedToApps ?? []).makeNode(in: nil)
+        ].makeNode(in: nil))
     }
     
 }
@@ -94,7 +94,7 @@ extension UploadToken {
         if let apps = request.data["apps"]?.array {
             self.limitedToApps = []
             for appId: JSON in apps as! [JSON] {
-                if try App.exists(id: appId.makeNode()) {
+                if try App.exists(id: appId.makeNode(in: nil)) {
                     self.limitedToApps?.append(appId.string!)
                 }
             }

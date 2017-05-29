@@ -44,7 +44,7 @@ final class TeamsController: RootController, ControllerProtocol {
         }
         
         let data = try Team.query()
-        return JSON(try data.requestSorted(request, sortBy: "name", direction: .ascending).makeNode())
+        return JSON(try data.requestSorted(request, sortBy: "name", direction: .ascending).makeNode(in: nil))
     }
     
     func get(request: Request, objectId: IdType) throws -> ResponseRepresentable {
@@ -120,7 +120,7 @@ final class TeamsController: RootController, ControllerProtocol {
             return ResponseBuilder.build(json: JSON([]))
         }
         
-        return JSON(try data.requestSorted(request, sortBy: "name", direction: .ascending).makeNode())
+        return JSON(try data.requestSorted(request, sortBy: "name", direction: .ascending).makeNode(in: nil))
     }
     
 }

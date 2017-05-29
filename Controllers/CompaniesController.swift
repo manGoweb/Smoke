@@ -54,11 +54,11 @@ final class CompaniesController: RootController, ControllerProtocol {
         // BOOST: Show only user companies if he's not an admin
         guard Me.shared.type(min: .admin) else {
             let data = try Company.query()
-            return JSON(try data.requestSorted(request, sortBy: "name", direction: .ascending).makeNode())
+            return JSON(try data.requestSorted(request, sortBy: "name", direction: .ascending).makeNode(in: nil))
         }
         
         let data = try Company.query()
-        return JSON(try data.all().makeNode())
+        return JSON(try data.all().makeNode(in: nil))
     }
     
     func get(request: Request, objectId: IdType) throws -> ResponseRepresentable {
@@ -156,7 +156,7 @@ final class CompaniesController: RootController, ControllerProtocol {
             object.logoName = fileName
             try object.save()
             
-            return ResponseBuilder.build(node: try ["uploaded": logoPath].makeNode(), statusCode: .success)
+            return ResponseBuilder.build(node: try ["uploaded": logoPath].makeNode(in: nil), statusCode: .success)
         }
         catch {
             return ResponseBuilder.internalServerError

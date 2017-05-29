@@ -42,9 +42,12 @@ final class AppController: RootController, ControllerProtocol {
         
         
         self.baseRoute.get(handler: self.root)
-        
+            
         // Ping
-        self.baseRoute.get(handler: self.ping)
+        self.baseRoute.get("ping") { request in
+            // TODO: If API key is present, prolong the life of the session
+            return ResponseBuilder.ping
+        }
         
         // Tea
         self.baseRoute.get("tea") { request in
@@ -55,14 +58,8 @@ final class AppController: RootController, ControllerProtocol {
     // MARK: Intro
     
     func root(request: Request) throws -> ResponseRepresentable {
-        // FIX: Change this to be loaded from config!
+        // TODO: Change this to be loaded from config!
         return ResponseBuilder.build(json: JSON(["Boost Enterprise AppStore": "https://github.com/manGoweb/Boost"]))
-    }
-    
-    // MARK: Data pages
-    
-    func ping(request: Request) throws -> ResponseRepresentable {
-        return ResponseBuilder.ping
     }
     
 }

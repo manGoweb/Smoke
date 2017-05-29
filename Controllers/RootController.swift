@@ -16,7 +16,7 @@ class RootController {
     
     // MARK: Routing
     
-    var baseRoute: Routing.RouteGroup = drop.grouped("v1")
+    var baseRoute: RouteBuilder = drop.grouped("v1")
     
     // MARK: Authentication
     

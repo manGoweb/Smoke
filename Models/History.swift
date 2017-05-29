@@ -8,7 +8,7 @@
 
 import Foundation
 import Vapor
-import Fluent
+import FluentProvider
 
 
 enum HistoryEvent: Int {

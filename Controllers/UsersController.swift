@@ -119,7 +119,7 @@ final class UsersController: RootController, ControllerProtocol {
         for user: User in users {
             user.password = nil
         }
-        return JSON(try users.makeNode())
+        return JSON(try users.makeNode(in: nil))
     }
     
     func view(request: Request, userId: IdType) throws -> ResponseRepresentable {
@@ -145,7 +145,7 @@ final class UsersController: RootController, ControllerProtocol {
         }
         
         let me: User? = Me.shared.user
-        let userIdNode = userId.makeNode()
+        let userIdNode = userId.makeNode(in: nil)
         
         guard Me.shared.type(min: .admin) || me?.id == userIdNode else {
             return ResponseBuilder.notAuthorised
@@ -180,7 +180,7 @@ final class UsersController: RootController, ControllerProtocol {
             return response
         }
         
-        let userIdNode = userId.makeNode()
+        let userIdNode = userId.makeNode(in: nil)
         if Me.shared.user?.id == userIdNode {
             return ResponseBuilder.selfHarm
         }
@@ -227,12 +227,12 @@ final class UsersController: RootController, ControllerProtocol {
     
     func userTypes(request: Request) throws -> ResponseRepresentable {
         let types: [String] = [UserType.superAdmin.rawValue, UserType.admin.rawValue, UserType.developer.rawValue, UserType.tester.rawValue]
-        return ResponseBuilder.build(node: try types.makeNode())
+        return ResponseBuilder.build(node: try types.makeNode(in: nil))
     }
     
     func userTypesFull(request: Request) throws -> ResponseRepresentable {
         let types: [String: String] = [UserType.superAdmin.rawValue: Lang.get("SuperAdmin"), UserType.admin.rawValue: Lang.get("Admin"), UserType.developer.rawValue: Lang.get("Developer"), UserType.tester.rawValue: Lang.get("Tester")]
-        return ResponseBuilder.build(node: try types.makeNode())
+        return ResponseBuilder.build(node: try types.makeNode(in: nil))
     }
     
     func teams(request: Request, userId: IdType) throws -> ResponseRepresentable {
@@ -251,7 +251,7 @@ final class UsersController: RootController, ControllerProtocol {
         }
         
         let teams = try user.teams().requestSorted(request, sortBy: "name", direction: .ascending)
-        return JSON(try teams.makeNode())
+        return JSON(try teams.makeNode(in: nil))
     }
     
 }

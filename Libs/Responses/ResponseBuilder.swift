@@ -8,7 +8,7 @@
 
 import Vapor
 import HTTP
-import Fluent
+import FluentProvider
 
 
 struct ResponseBuilder {
@@ -19,7 +19,7 @@ struct ResponseBuilder {
     static func build<M: Model>(model: M, statusCode: StatusCodes = .success) -> ResponseRepresentable {
         do {
             let status: Status = .other(statusCode: statusCode.rawValue, reasonPhrase: Lang.get("Success"))
-            let response: Response = try Response.init(status: status, json: JSON(model.makeNode()))
+            let response: Response = try Response.init(status: status, json: JSON(model.makeNode(in: nil)))
             response.headers["Content-Type"] = "application/json"
             response.headers["Access-Control-Allow-Origin"] = "*"
             return response
@@ -62,11 +62,11 @@ struct ResponseBuilder {
             let status: Status = .other(statusCode: StatusCodes.preconditionNotMet.rawValue, reasonPhrase: Lang.get("Validation error"))
             var formattedErrors: [Node] = []
             for e: ValidationError in errors {
-                let errorDetailNode = try ["type": e.validationType.rawValue, "localized": e.errorMessage].makeNode()
-                let errorNode = try [e.name: errorDetailNode].makeNode()
+                let errorDetailNode = try ["type": e.validationType.rawValue, "localized": e.errorMessage].makeNode(in: nil)
+                let errorNode = try [e.name: errorDetailNode].makeNode(in: nil)
                 formattedErrors.append(errorNode)
             }
-            let response: Response = try Response.init(status: status, json: JSON(formattedErrors.makeNode()))
+            let response: Response = try Response.init(status: status, json: JSON(formattedErrors.makeNode(in: nil)))
             response.headers["Content-Type"] = "application/json"
             response.headers["Access-Control-Allow-Origin"] = "*"
             return response
@@ -81,7 +81,7 @@ struct ResponseBuilder {
     static func customErrorResponse(statusCode code: StatusCodes, message: String, bodyMessage: String? = nil) -> ResponseRepresentable {
         let response = Response(status: .other(statusCode: code.rawValue, reasonPhrase: message))
         response.headers["Content-Type"] = "application/json"
-        response.body = try! Body(JSON(["error": (bodyMessage != nil ? bodyMessage! : message).makeNode()]))
+        response.body = try! Body(JSON(["error": (bodyMessage != nil ? bodyMessage! : message).makeNode(in: nil)]))
         response.headers["Access-Control-Allow-Origin"] = "*"
         return response
     }

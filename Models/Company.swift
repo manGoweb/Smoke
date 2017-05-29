@@ -8,7 +8,7 @@
 
 import Foundation
 import Vapor
-import Fluent
+import FluentProvider
 import HTTP
 
 
@@ -79,8 +79,8 @@ final class Company: Model {
             "backgroundcolor": self.backgroundColor,
             "contentfontcolor": self.contentFontColor,
             
-            "created": self.created?.timeIntervalSince1970.makeNode(),
-            "users": self.users?.makeNode()
+            "created": self.created?.timeIntervalSince1970.makeNode(in: nil),
+            "users": self.users?.makeNode(in: nil)
             ])
         return nodes
     }
@@ -115,7 +115,7 @@ extension Company {
     }
     
     static func exists(idString: String) throws -> Bool {
-        return try self.exists(id: idString.makeNode())
+        return try self.exists(id: idString.makeNode(in: nil))
     }
     
     // MARK: Save / update

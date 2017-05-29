@@ -8,7 +8,7 @@
 
 import Foundation
 import Vapor
-import Fluent
+import FluentProvider
 
 
 final class Auth: Model {
@@ -62,7 +62,7 @@ final class Auth: Model {
     func makeJSON() throws -> JSON {
         let user: User = self.user!
         user.password = nil
-        return JSON(["token": self.token!.makeNode(), "expires": self.expires!.timeIntervalSince1970.makeNode(), "user": try user.makeNode()])
+        return JSON(["token": self.token!.makeNode(in: nil), "expires": self.expires!.timeIntervalSince1970.makeNode(in: nil), "user": try user.makeNode(in: nil)])
     }
     
 }

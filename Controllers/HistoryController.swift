@@ -28,7 +28,7 @@ final class HistoryController: RootController, ControllerProtocol {
         }
         
         let data: [History] = try History.query().requestSorted(request, sortBy: "created", direction: .descending)
-        return JSON(try data.makeNode())
+        return JSON(try data.makeNode(in: nil))
     }
     
 }

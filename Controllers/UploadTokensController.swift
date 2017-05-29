@@ -43,7 +43,7 @@ final class UploadTokensController: RootController, ControllerProtocol {
         for item in data {
             try output.append(item.makeJSON())
         }
-        return JSON(try output.makeNode())
+        return JSON(try output.makeNode(in: nil))
     }
     
     func create(request: Request) throws -> ResponseRepresentable {
@@ -77,7 +77,7 @@ final class UploadTokensController: RootController, ControllerProtocol {
         }
         
         token.token = guid
-        return JSON(try token.makeNode())
+        return JSON(try token.makeNode(in: nil))
     }
     
     func put(request: Request, objectId: IdType) throws -> ResponseRepresentable {
@@ -85,7 +85,7 @@ final class UploadTokensController: RootController, ControllerProtocol {
             return response
         }
         
-        guard var token = try UploadToken.find(objectId.makeNode()) else {
+        guard var token = try UploadToken.find(objectId.makeNode(in: nil)) else {
             return ResponseBuilder.notFound
         }
         
@@ -118,7 +118,7 @@ final class UploadTokensController: RootController, ControllerProtocol {
             return response
         }
         
-        guard let token = try UploadToken.find(objectId.makeNode()) else {
+        guard let token = try UploadToken.find(objectId.makeNode(in: nil)) else {
             return ResponseBuilder.notFound
         }
         
